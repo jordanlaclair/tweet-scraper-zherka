@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer base {
+  html {
+    font-family: "Lemon", system-ui, sans-serif;
+  }
+}
