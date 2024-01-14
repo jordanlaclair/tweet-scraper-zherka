@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
-import Ball from "./ball";
 import TweetWrapper from "./TweetWrapper";
+import TweetType from "./_types/Tweet";
 
 async function getData() {
   const res = await fetch(
-    "https://newsapi.org/v2/top-headlines?country=us&apiKey=1871f253a7524cce8c65a68960f516b5&pageSize=1&page=1",
+    "https://newsapi.org/v2/top-headlines?country=us&apiKey=1871f253a7524cce8c65a68960f516b5&pageSize=3&page=3",
     { next: { revalidate: 3600 } }
   );
   // The return value is *not* serialized
@@ -19,16 +19,11 @@ async function getData() {
   return res.json();
 }
 
-type Tweet = {
-  body: string;
-};
-
 export default async function Home() {
   const data = await getData();
-  const cookieStore = cookies().getAll();
-  const tweetsData: Tweet[] = [{ body: "tweet 1" }, { body: "tweet 2" }];
-  console.log(data);
-  console.log(cookieStore);
+
+  const tweetsData: TweetType[] = data.articles;
+  console.log(tweetsData);
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">

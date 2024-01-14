@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Cinzel } from "next/font/google";
+import { Roboto, Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 
 //const inter = Inter({ subsets: ["latin"] });
 
 const cinzel = Cinzel({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cinzel.className}>{children}</body>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 }

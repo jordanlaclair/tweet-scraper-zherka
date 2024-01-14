@@ -2,18 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Tweet from "./Tweet";
+import TweetType from "./_types/Tweet";
 
-type Tweet = {
-  body: string;
-};
-
-const TweetWrapper = (props: { tweetsData: Tweet[] }) => {
+const TweetWrapper = (props: { tweetsData: TweetType[] }) => {
   const bigBox = useRef<HTMLDivElement>(null);
-  const [pause, setPause] = useState<boolean>(true);
-
-  const changePause = () => {
-    setPause(!pause);
-  };
 
   if (!props.tweetsData) return null;
 
@@ -22,11 +14,10 @@ const TweetWrapper = (props: { tweetsData: Tweet[] }) => {
       className="w-screen min-h-screen flex-col items-center justify-between"
       ref={bigBox}
     >
-      <Tweet wrapper={bigBox} key={1} n={1} paused={pause} />
-      <Tweet wrapper={bigBox} key={2} n={2} paused={pause} />
-      <button style={{ position: "absolute", top: 0 }} onClick={changePause}>
-        Pause
-      </button>
+      {props.tweetsData.map((tweet, index) => (
+        <Tweet key={index} wrapper={bigBox} data={tweet} />
+      ))}
+      <button style={{ position: "absolute", top: 0 }}>Pause</button>
     </div>
   );
 };
