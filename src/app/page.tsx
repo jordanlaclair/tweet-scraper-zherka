@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
-import Balls from "./balls";
+import Ball from "./ball";
+import TweetWrapper from "./TweetWrapper";
 
 async function getData() {
   const res = await fetch(
@@ -18,15 +19,20 @@ async function getData() {
   return res.json();
 }
 
+type Tweet = {
+  body: string;
+};
+
 export default async function Home() {
   const data = await getData();
   const cookieStore = cookies().getAll();
+  const tweetsData: Tweet[] = [{ body: "tweet 1" }, { body: "tweet 2" }];
   console.log(data);
   console.log(cookieStore);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 font-lemon">
-      <Balls />
+    <main className="flex min-h-screen w-screen flex-col items-center justify-between">
+      <TweetWrapper tweetsData={tweetsData} />
     </main>
   );
 }
