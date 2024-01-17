@@ -17,7 +17,6 @@ const TweetWrapper = (props: { tweetsData: TweetType[] }) => {
       {props.tweetsData.map((tweet, index) => (
         <Tweet key={index} wrapper={bigBox} data={tweet} />
       ))}
-      <button style={{ position: "absolute", top: 0 }}>Pause</button>
     </div>
   );
 };

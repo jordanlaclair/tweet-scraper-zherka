@@ -4,6 +4,8 @@ import TweetType from "./_types/Tweet";
 import { CardContent, Card } from "@/components/ui/card";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Link from "next/link";
+import twitterVerifiedBadge from "../app/../../public/Twitter_Verified_Badge.svg";
+import Image from "next/image";
 
 const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
   function getOffset(el: HTMLDivElement) {
@@ -112,9 +114,14 @@ const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
           </Avatar>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <Link className="font-medium" href="#">
+              <Link className="font-extrabold" href="#">
                 {props.data.author}
               </Link>
+              <Image
+                priority
+                src={twitterVerifiedBadge}
+                alt="Verified badge on Twitter"
+              />
               <span className="text-gray-500 dark:text-gray-400">@johndoe</span>
               <span className="text-gray-500 dark:text-gray-400">·</span>
               <span className="text-gray-500 dark:text-gray-400">

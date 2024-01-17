@@ -2,6 +2,7 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import TweetWrapper from "./TweetWrapper";
 import TweetType from "./_types/Tweet";
+import Matrix from "./Matrix";
 
 async function getData() {
   const res = await fetch(
@@ -27,6 +28,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">
+      <Matrix />
       <TweetWrapper tweetsData={tweetsData} />
     </main>
   );
