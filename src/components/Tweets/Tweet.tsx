@@ -1,10 +1,10 @@
 "use client";
 import React, { RefObject, useEffect, useRef, useState } from "react";
-import TweetType from "./_types/Tweet";
+import TweetType from "../../app/_types/Tweet";
 import { CardContent, Card } from "@/components/ui/card";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Link from "next/link";
-import twitterVerifiedBadge from "../app/../../public/Twitter_Verified_Badge.svg";
+import twitterVerifiedBadge from "../app/../../../public/Twitter_Verified_Badge.svg";
 import Image from "next/image";
 
 const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {

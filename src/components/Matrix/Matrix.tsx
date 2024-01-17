@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import styles from "../../app/styles.module.css";
 
 const Matrix = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -52,9 +51,6 @@ const Matrix = () => {
     if (canvasRef.current && canvasRef) {
       canvasRef.current.width = window.innerWidth;
       canvasRef.current.height = window.innerHeight;
-
-      console.log(canvasRef.current);
-      console.log(ctxRef.current);
 
       const fontSize = 10;
       // Setting up the columns

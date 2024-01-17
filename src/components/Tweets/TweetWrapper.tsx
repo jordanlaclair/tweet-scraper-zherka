@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Tweet from "./Tweet";
-import TweetType from "./_types/Tweet";
+import TweetType from "../../app/_types/Tweet";
 
 const TweetWrapper = (props: { tweetsData: TweetType[] }) => {
   const bigBox = useRef<HTMLDivElement>(null);
