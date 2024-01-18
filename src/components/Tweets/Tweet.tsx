@@ -7,7 +7,12 @@ import Link from "next/link";
 import twitterVerifiedBadge from "../app/../../../public/Twitter_Verified_Badge.svg";
 import Image from "next/image";
 
-const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
+const Tweet = (props: {
+  wrapper: HTMLElement;
+  data: TweetType;
+  x: number;
+  y: number;
+}) => {
   function getOffset(el: HTMLDivElement) {
     const rect = el.getBoundingClientRect();
     return {
@@ -40,8 +45,8 @@ const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
   const box = useRef<HTMLDivElement>(null);
 
   const [position, setPosition] = useState({
-    x: 0,
-    y: 0,
+    x: props.x,
+    y: props.y,
   });
 
   const [speed, setSpeed] = useState({ x: 1, y: 1 });
@@ -51,18 +56,16 @@ const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
 
     const { x: xSpeed, y: ySpeed } = speed;
 
-    if (box && box.current && props.wrapper && props.wrapper.current) {
+    if (box && box.current && props.wrapper && props.wrapper) {
       if (
-        x + box.current.offsetWidth + xSpeed >
-          props.wrapper.current.offsetWidth ||
+        x + box.current.offsetWidth + xSpeed > props.wrapper.offsetWidth ||
         x + xSpeed < 0
       ) {
         setSpeed((prevSpeed) => ({ ...prevSpeed, x: -prevSpeed.x }));
       }
 
       if (
-        y + box.current.offsetHeight + ySpeed >
-          props.wrapper.current.offsetHeight ||
+        y + box.current.offsetHeight + ySpeed > props.wrapper.offsetHeight ||
         y + ySpeed < 0
       ) {
         setSpeed((prevSpeed) => ({ ...prevSpeed, y: -prevSpeed.y }));
@@ -80,19 +83,14 @@ const Tweet = (props: { wrapper: RefObject<HTMLElement>; data: TweetType }) => {
   }, [position, speed]);
 
   useEffect(() => {
-    console.log(props.data.author);
-    if (props.wrapper.current && props.wrapper && box.current && box) {
+    if (props.wrapper && props.wrapper && box.current && box) {
       setPosition({
         x: getRandomInt(
-          props.wrapper.current.offsetWidth -
+          props.wrapper.offsetWidth -
             box.current.offsetWidth -
             parseInt(getComputedStyle(box.current).marginLeft)
         ),
-        y: getRandomInt(
-          props.wrapper.current.offsetHeight -
-            box.current.offsetHeight -
-            parseInt(getComputedStyle(box.current).marginTop)
-        ),
+        y: props.y,
       });
     }
   }, []);

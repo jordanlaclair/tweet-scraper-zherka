@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { cookies } from "next/headers";
 import TweetWrapper from "../components/Tweets/TweetWrapper";
 import TweetType from "./_types/Tweet";
 import Matrix from "../components/Matrix/Matrix";
