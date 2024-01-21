@@ -1,6 +1,5 @@
 import TweetWrapper from "../components/Tweets/TweetWrapper";
 import Matrix from "../components/Matrix/Matrix";
-import { Profile, Scraper, Tweet } from "@the-convocation/twitter-scraper";
 import User from "../app/_types/User";
 
 async function getTwitterProfile() {
@@ -25,7 +24,7 @@ export default async function Home() {
 
   const user = await getTwitterProfile();
 
-  console.log(user);
+  //console.log(user);
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">

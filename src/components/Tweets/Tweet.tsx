@@ -8,6 +8,8 @@ import twitterVerifiedBadge from "../app/../../../public/Twitter_Verified_Badge.
 import Image from "next/image";
 import User from "../../app/_types/User";
 import moment from "moment";
+import TweetImage from "./TweetImage";
+import TweetMedia from "./TweetMedia";
 
 const Tweet = (props: {
   wrapper: HTMLElement;
@@ -113,7 +115,7 @@ const Tweet = (props: {
           marginTop: `${position.y}px`,
         }}
       >
-        <CardContent className="p-0">
+        <CardContent className="p-0 flex flex-col items-center justify-center">
           <div className="flex items-start gap-4 p-4">
             <Avatar className="w-12 h-12 border">
               <AvatarImage
@@ -143,6 +145,7 @@ const Tweet = (props: {
               <p className="text-sm">{props.tweetData.text}</p>
             </div>
           </div>
+          <TweetMedia tweetData={props.tweetData} />
         </CardContent>
       </Card>
     </Link>

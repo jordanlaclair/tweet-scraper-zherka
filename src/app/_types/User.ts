@@ -1,8 +1,9 @@
-import { Tweet, Profile } from "@the-convocation/twitter-scraper";
+import { Profile } from "@the-convocation/twitter-scraper";
+import TTweet from "./Tweet";
 
 type User = {
   user: Profile;
-  tweets: Tweet[];
+  tweets: TTweet[];
 };
 
 export default User;
