@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import User from "../../app/_types/User";
 import Tweet from "./Tweet";
-import TweetType from "../../app/_types/Tweet";
 
-const TweetWrapper = (props: { tweetsData: TweetType[] }) => {
+const TweetWrapper = (props: { userData: User }) => {
   const [bigBox, setBigBox] = useState<HTMLDivElement | null>(null);
 
   const measuredRef = useCallback((node: HTMLDivElement) => {
@@ -15,21 +15,22 @@ const TweetWrapper = (props: { tweetsData: TweetType[] }) => {
     return (element.offsetHeight / (n + 1)) % element.offsetHeight;
   };
 
-  if (!props.tweetsData) return null;
+  if (!props.userData.tweets || !props.userData.tweets) return null;
 
   return (
     <div
       className="w-screen min-h-screen flex-col items-center justify-between"
       ref={measuredRef}
     >
-      {props.tweetsData.map((tweet, index) => {
+      {props.userData.tweets.map((tweet, index) => {
         if (!bigBox) return null;
 
         return (
           <Tweet
             key={index}
             wrapper={bigBox}
-            data={tweet}
+            tweetData={tweet}
+            userData={props.userData.user}
             x={0}
             y={calcOffset(bigBox, index)}
           />

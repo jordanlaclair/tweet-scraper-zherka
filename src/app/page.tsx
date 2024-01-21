@@ -1,6 +1,51 @@
 import TweetWrapper from "../components/Tweets/TweetWrapper";
-import TweetType from "./_types/Tweet";
 import Matrix from "../components/Matrix/Matrix";
+import { Profile, Scraper, Tweet } from "@the-convocation/twitter-scraper";
+import User from "../app/_types/User";
+import { ApiError } from "@the-convocation/twitter-scraper/dist/errors";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+
+async function getTwitterProfile() {
+  const scraper = new Scraper();
+
+  let userData: Profile;
+  let tweetsData: Tweet[] = [];
+  const test = await fetch("http://localhost:3000/api", {
+    next: { revalidate: 3600 },
+  });
+
+  console.log(await test.json());
+
+  // try {
+  //   return scraper
+  //     .getProfile("zherkaofficial")
+  //     .then((user) => {
+  //       userData = user;
+  //       if (user.userId) return scraper.getTweetsByUserId(user.userId, 5);
+  //     })
+  //     .then(async (tweets) => {
+  //       if (tweets) {
+  //         for await (const tweet of tweets) {
+  //           if (tweet) tweetsData.push(tweet);
+  //         }
+  //       }
+
+  //       const final: User = {
+  //         user: userData,
+  //         tweets: tweetsData,
+  //       };
+
+  //       return final;
+  //     })
+  //     .then((data) => {
+  //       //console.log(data);
+  //       return data;
+  //     });
+  // } catch (error) {
+  //   throw ApiError;
+  // }
+}
 
 async function getData() {
   const res = await fetch(
@@ -19,15 +64,17 @@ async function getData() {
 }
 
 export default async function Home() {
-  const data = await getData();
+  //const data = await getData();
+  //const tweetsData: TweetType[] = data.articles;
 
-  const tweetsData: TweetType[] = data.articles;
-  console.log(tweetsData);
+  const user = await getTwitterProfile();
+
+  console.log(user);
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">
       <Matrix />
-      <TweetWrapper tweetsData={tweetsData} />
+      {/* <TweetWrapper userData={user} /> */}
     </main>
   );
 }

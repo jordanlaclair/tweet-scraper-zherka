@@ -1,15 +1,18 @@
 "use client";
-import React, { RefObject, useEffect, useRef, useState } from "react";
-import TweetType from "../../app/_types/Tweet";
+import React, { useEffect, useRef, useState } from "react";
+import { Tweet } from "@the-convocation/twitter-scraper";
 import { CardContent, Card } from "@/components/ui/card";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import Link from "next/link";
 import twitterVerifiedBadge from "../app/../../../public/Twitter_Verified_Badge.svg";
 import Image from "next/image";
+import User from "../../app/_types/User";
+import moment from "moment";
 
 const Tweet = (props: {
   wrapper: HTMLElement;
-  data: TweetType;
+  tweetData: Tweet;
+  userData: User["user"];
   x: number;
   y: number;
 }) => {
@@ -83,6 +86,8 @@ const Tweet = (props: {
   }, [position, speed]);
 
   useEffect(() => {
+    console.log(props.tweetData.videos);
+    console.log(props.tweetData.photos);
     if (props.wrapper && props.wrapper && box.current && box) {
       setPosition({
         x: getRandomInt(
@@ -96,43 +101,51 @@ const Tweet = (props: {
   }, []);
 
   return (
-    <Card
-      className="w-full max-w-md fixed"
-      ref={box}
-      style={{
-        marginLeft: `${position.x}px`,
-        marginTop: `${position.y}px`,
-      }}
+    <Link
+      href={props.tweetData.permanentUrl ? props.tweetData.permanentUrl : ""}
+      target="_blank"
     >
-      <CardContent className="p-0">
-        <div className="flex items-start gap-4 p-4">
-          <Avatar className="w-12 h-12 border">
-            <AvatarImage alt="@johndoe" src="/placeholder-user.jpg" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <Link className="font-extrabold" href="#">
-                {props.data.author}
-              </Link>
-              <Image
-                priority
-                src={twitterVerifiedBadge}
-                alt="Verified badge on Twitter"
+      <Card
+        className="w-full max-w-md fixed"
+        ref={box}
+        style={{
+          marginLeft: `${position.x}px`,
+          marginTop: `${position.y}px`,
+        }}
+      >
+        <CardContent className="p-0">
+          <div className="flex items-start gap-4 p-4">
+            <Avatar className="w-12 h-12 border">
+              <AvatarImage
+                alt={props.userData.name}
+                src={props.userData.avatar}
               />
-              <span className="text-gray-500 dark:text-gray-400">@johndoe</span>
-              <span className="text-gray-500 dark:text-gray-400">·</span>
-              <span className="text-gray-500 dark:text-gray-400">
-                2 hours ago
-              </span>
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold">{props.tweetData.name}</span>
+                <Image
+                  priority
+                  src={twitterVerifiedBadge}
+                  alt="Verified badge on Twitter"
+                />
+                <span className="text-gray-500 dark:text-gray-400">
+                  @{props.tweetData.username}
+                </span>
+                <span className="text-gray-500 dark:text-gray-400">·</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  {props.tweetData.timestamp
+                    ? moment.unix(props.tweetData.timestamp).fromNow()
+                    : ""}
+                </span>
+              </div>
+              <p className="text-sm">{props.tweetData.text}</p>
             </div>
-            <p className="text-sm">
-              Just had the most delicious pizza for dinner! 🍕 #FoodieLife
-            </p>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 
