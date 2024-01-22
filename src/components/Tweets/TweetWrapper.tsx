@@ -33,7 +33,7 @@ const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
   };
 
   const calcOffsetX = (element: HTMLDivElement, n: number) => {
-    return getRandomInt(element.offsetWidth);
+    //return getRandomInt(element.offsetWidth);
     return (element.offsetWidth / (n + 1)) % element.offsetWidth;
   };
 

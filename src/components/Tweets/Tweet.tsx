@@ -53,8 +53,13 @@ const Tweet = (props: {
     x: props.x,
     y: props.y,
   });
-
-  const [speed, setSpeed] = useState({ x: 0.5, y: 0.5 });
+  function randomNumber(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+  const [speed, setSpeed] = useState({
+    x: randomNumber(0.1, 1),
+    y: randomNumber(0.1, 1),
+  });
 
   function update() {
     const { x, y } = position;
@@ -99,12 +104,11 @@ const Tweet = (props: {
 
   return (
     <Link
-      className="fixed"
       href={props.tweetData.permanentUrl ? props.tweetData.permanentUrl : ""}
       target="_blank"
     >
       <Card
-        className="w-96 max-w-md"
+        className="w-96 max-w-md fixed"
         ref={box}
         style={{
           marginLeft: `${position.x}px`,
