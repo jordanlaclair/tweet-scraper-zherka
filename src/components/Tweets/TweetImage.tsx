@@ -16,9 +16,9 @@ const TweetImage = (props: {
       alt="Media content"
       placeholder="blur"
       blurDataURL={props.blurredPreview}
-      className="rounded-lg border overflow-hidden"
+      className="rounded-lg border overflow-hidden object-cover"
       fill={true}
-      objectFit="cover"
+      sizes="(max-width: 768px) 200px, (max-width: 1200px) 250px, 250px"
       src={props.photos[0].url}
     />
   );

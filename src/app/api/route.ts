@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       .getProfile("zherkaofficial")
       .then((user) => {
         userData = user;
-        if (user.userId) return scraper.getTweetsByUserId(user.userId, 5);
+        if (user.userId) return scraper.getTweetsByUserId(user.userId, 100);
       })
       .then(async (tweets) => {
         if (tweets) {

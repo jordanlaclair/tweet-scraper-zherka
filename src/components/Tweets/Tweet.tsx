@@ -8,8 +8,8 @@ import twitterVerifiedBadge from "../app/../../../public/Twitter_Verified_Badge.
 import Image from "next/image";
 import User from "../../app/_types/User";
 import moment from "moment";
-import TweetImage from "./TweetImage";
 import TweetMedia from "./TweetMedia";
+import { parseTweetLength } from "@/lib/utils";
 
 const Tweet = (props: {
   wrapper: HTMLElement;
@@ -31,7 +31,7 @@ const Tweet = (props: {
     var style = getComputedStyle(el);
 
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
-    console.log(width);
+
     return width;
   }
 
@@ -54,7 +54,7 @@ const Tweet = (props: {
     y: props.y,
   });
 
-  const [speed, setSpeed] = useState({ x: 1, y: 1 });
+  const [speed, setSpeed] = useState({ x: 0.5, y: 0.5 });
 
   function update() {
     const { x, y } = position;
@@ -88,15 +88,10 @@ const Tweet = (props: {
   }, [position, speed]);
 
   useEffect(() => {
-    console.log(props.tweetData.videos);
-    console.log(props.tweetData.photos);
+    console.log(props.x, props.y);
     if (props.wrapper && props.wrapper && box.current && box) {
       setPosition({
-        x: getRandomInt(
-          props.wrapper.offsetWidth -
-            box.current.offsetWidth -
-            parseInt(getComputedStyle(box.current).marginLeft)
-        ),
+        x: props.x,
         y: props.y,
       });
     }
@@ -104,11 +99,12 @@ const Tweet = (props: {
 
   return (
     <Link
+      className="fixed"
       href={props.tweetData.permanentUrl ? props.tweetData.permanentUrl : ""}
       target="_blank"
     >
       <Card
-        className="w-full max-w-md fixed"
+        className="w-96 max-w-md"
         ref={box}
         style={{
           marginLeft: `${position.x}px`,
@@ -124,9 +120,11 @@ const Tweet = (props: {
               />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 ">
               <div className="flex items-center gap-2">
-                <span className="font-extrabold">{props.tweetData.name}</span>
+                <span className="font-extrabold text-base">
+                  {props.tweetData.name}
+                </span>
                 <Image
                   priority
                   src={twitterVerifiedBadge}
@@ -136,13 +134,15 @@ const Tweet = (props: {
                   @{props.tweetData.username}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">·</span>
-                <span className="text-gray-500 dark:text-gray-400">
+                <span className="text-gray-500 dark:text-gray-400 min-w-0 text-nowrap">
                   {props.tweetData.timestamp
                     ? moment.unix(props.tweetData.timestamp).fromNow()
                     : ""}
                 </span>
               </div>
-              <p className="text-sm">{props.tweetData.text}</p>
+              <p className="text-sm">
+                {parseTweetLength(props.tweetData.text)}
+              </p>
             </div>
           </div>
           <TweetMedia tweetData={props.tweetData} />
