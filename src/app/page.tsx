@@ -25,7 +25,7 @@ export default async function Home() {
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);
   let shuffledUser = { ...globalUser, tweets: shuffledTweets };
-  console.log(shuffledUser);
+  //console.log(shuffledUser);
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">
