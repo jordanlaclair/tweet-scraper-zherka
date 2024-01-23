@@ -24,9 +24,7 @@ async function getTwitterProfile() {
 }
 
 export default async function Home() {
-  if (process.env.NEXT_PUBLIC_BASE_API_URL != "http://localhost:3000") {
-    return null;
-  }
+  return null;
 
   let globalUser = await getTwitterProfile();
 
