@@ -6,7 +6,7 @@ import TTweet from "../../app/_types/Tweet";
 async function fetchBlurredImages(link: string) {
   const url = link;
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API_URL}/tweetMedia/api?imageUrl=${url}`
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`
   );
   const { data }: { data: string } = await res.json();
   return data;

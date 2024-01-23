@@ -5,7 +5,7 @@ import { getRandom } from "@/lib/utils";
 
 async function getTwitterProfile() {
   const userResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API_URL}/api`,
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`,
     {
       //1 week of cache
       next: { revalidate: 604800, tags: ["user"] },
