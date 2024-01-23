@@ -2,8 +2,9 @@ import TweetWrapper from "../components/Tweets/TweetWrapper";
 import Matrix from "../components/Matrix/Matrix";
 import User from "../app/_types/User";
 import { getRandom } from "@/lib/utils";
+
 async function getTwitterProfile() {
-  const userResponse = await fetch("http://localhost:3000/api", {
+  const userResponse = await fetch(`${process.env.HOST_NAME}/api`, {
     //1 week of cache
     next: { revalidate: 604800, tags: ["user"] },
   });
