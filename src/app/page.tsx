@@ -2,28 +2,82 @@ import TweetWrapper from "../components/Tweets/TweetWrapper";
 import Matrix from "../components/Matrix/Matrix";
 import User from "../app/_types/User";
 import { getRandom } from "@/lib/utils";
+import { fetchTweets } from "@/lib/utils";
+import { ApiError } from "@the-convocation/twitter-scraper/dist/errors";
+import TTweet from "./_types/Tweet";
+import { Profile, Scraper } from "@the-convocation/twitter-scraper";
 
-async function getTwitterProfile() {
-  let link = "";
+async function fetchBlurredImages(link: string) {
+  const url = link;
+
+  let x = "";
   if (process.env.NEXT_PUBLIC_VERCEL_ENV == "development") {
-    link = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+    x = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
   } else {
-    link = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+    x = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
   }
 
-  const userResponse = await fetch(link, {
-    //1 week of cache
-    next: { revalidate: 604800, tags: ["user"] },
+  const res = await fetch(x);
+  const { data }: { data: string } = await res.json();
+  return data;
+}
+async function getTwitterProfile() {
+  const scraper = new Scraper({
+    fetch: (input, init) => {
+      // Transform input and init into your function's expected types...
+      return fetch(input, { ...init, next: { revalidate: 3600 } }).then(
+        (res) => {
+          // Transform res into a web-compliant response...
+          return res;
+        }
+      );
+    },
   });
 
-  if (!userResponse.ok) {
-    throw new Error("Failed to fetch data");
+  let userData: Profile;
+  let tweetsData: TTweet[] = [];
+
+  try {
+    return scraper
+      .getProfile("zherkaofficial")
+      .then((user) => {
+        userData = user;
+        if (user.userId) return scraper.getTweetsByUserId(user.userId, 100);
+      })
+      .then(async (tweets) => {
+        if (tweets) {
+          for await (const tweet of tweets) {
+            if (tweet) {
+              let t: TTweet = tweet;
+              if (tweet.videos && tweet.videos.length > 0) {
+                const blurredMedia = await fetchBlurredImages(
+                  tweet.videos[0].preview
+                );
+                t = { ...tweet, blurredMedia };
+              }
+
+              if (tweet.photos && tweet.photos.length > 0) {
+                const blurredMedia = await fetchBlurredImages(
+                  tweet.photos[0].url
+                );
+                t = { ...tweet, blurredMedia };
+              }
+              tweetsData.push(t);
+            }
+          }
+        }
+
+        const user: User = {
+          user: userData,
+          tweets: tweetsData,
+        };
+
+        return user;
+      });
+  } catch (error) {
+    throw ApiError;
   }
-
-  const res = await userResponse.json();
-  let { data: user }: { data: User } = res;
-
-  return user;
+  //const userResponse = await fetchTweets();
 }
 
 export default async function Home() {
