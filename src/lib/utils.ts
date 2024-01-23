@@ -20,7 +20,7 @@ export function getRandom(arr: Array<any>, n: number) {
     result[n] = arr[x in taken ? taken[x] : x];
     taken[x] = --len in taken ? taken[len] : len;
   }
-  console.log(result);
+  //console.log(result);
   return result;
 }
 

@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   const { base64 } = await getPlaiceholder(buffer);
 
-  console.log(base64);
+  //console.log(base64);
 
   return new Response(JSON.stringify({ data: base64 }), {
     headers: {
