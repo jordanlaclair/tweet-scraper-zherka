@@ -4,13 +4,17 @@ import User from "../app/_types/User";
 import { getRandom } from "@/lib/utils";
 
 async function getTwitterProfile() {
-  const userResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`,
-    {
-      //1 week of cache
-      next: { revalidate: 604800, tags: ["user"] },
-    }
-  );
+  let link = "";
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV == "development") {
+    link = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+  } else {
+    link = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+  }
+
+  const userResponse = await fetch(link, {
+    //1 week of cache
+    next: { revalidate: 604800, tags: ["user"] },
+  });
 
   if (!userResponse.ok) {
     throw new Error("Failed to fetch data");
@@ -23,8 +27,6 @@ async function getTwitterProfile() {
 }
 
 export default async function Home() {
-  return null;
-
   let globalUser = await getTwitterProfile();
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);

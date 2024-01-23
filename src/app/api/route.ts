@@ -5,9 +5,15 @@ import TTweet from "../../app/_types/Tweet";
 
 async function fetchBlurredImages(link: string) {
   const url = link;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`
-  );
+
+  let x = "";
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV == "development") {
+    x = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
+  } else {
+    x = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
+  }
+
+  const res = await fetch(x);
   const { data }: { data: string } = await res.json();
   return data;
 }
