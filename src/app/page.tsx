@@ -20,9 +20,6 @@ async function getTwitterProfile() {
 }
 
 export default async function Home() {
-  //const data = await getData();
-  //const tweetsData: TweetType[] = data.articles;
-
   let globalUser = await getTwitterProfile();
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);

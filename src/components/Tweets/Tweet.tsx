@@ -93,7 +93,7 @@ const Tweet = (props: {
   }, [position, speed]);
 
   useEffect(() => {
-    console.log(props.x, props.y);
+    //console.log(props.x, props.y);
     if (props.wrapper && props.wrapper && box.current && box) {
       setPosition({
         x: props.x,

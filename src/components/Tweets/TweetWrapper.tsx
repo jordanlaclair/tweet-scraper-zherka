@@ -40,8 +40,6 @@ const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
   if (!props.shuffledUserData.tweets || !props.shuffledUserData.tweets)
     return null;
 
-  console.log("here");
-
   return (
     <div
       className="min-w-full min-h-screen flex-col items-center justify-between overflow-x-scroll relative"
