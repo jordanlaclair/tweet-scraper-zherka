@@ -2,39 +2,9 @@ import TweetWrapper from "../components/Tweets/TweetWrapper";
 import Matrix from "../components/Matrix/Matrix";
 import User from "../app/_types/User";
 import { getRandom } from "@/lib/utils";
-import { fetchTweets } from "@/lib/utils";
 import { ApiError } from "@the-convocation/twitter-scraper/dist/errors";
 import TTweet from "./_types/Tweet";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
-import { getPlaiceholder } from "plaiceholder";
-
-async function setBlurredTweets(user: User) {
-  try {
-    for (let i = 0; i < user.tweets.length; i++) {
-      let tweet: TTweet = user.tweets[i];
-
-      let blurredMedia = "";
-      let source = "";
-      if (tweet.videos && tweet.videos.length > 0) {
-        source = tweet.videos[0].preview;
-      }
-      if (tweet.photos && tweet.photos.length > 0) {
-        source = tweet.photos[0].url;
-      }
-      if (source != "") {
-        const buffer = await fetch(source, {
-          next: { revalidate: 604800 },
-        }).then(async (res) => Buffer.from(await res.arrayBuffer()));
-        const { base64 } = await getPlaiceholder(buffer);
-        blurredMedia = base64;
-        user.tweets[i].blurredMedia = blurredMedia;
-      }
-    }
-    return user;
-  } catch (error) {
-    throw ApiError;
-  }
-}
 
 async function getTwitterProfile() {
   const scraper = new Scraper({
@@ -84,8 +54,6 @@ async function getTwitterProfile() {
 
 export default async function Home() {
   let globalUser = await getTwitterProfile();
-  // let globalUserBlurred = await setBlurredTweets(globalUser);
-  // globalUser = globalUserBlurred;
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);
   let shuffledUser = { ...globalUser, tweets: shuffledTweets };
