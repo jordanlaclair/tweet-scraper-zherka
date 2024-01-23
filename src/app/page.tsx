@@ -6,9 +6,9 @@ import { getRandom } from "@/lib/utils";
 async function getTwitterProfile() {
   let link = "";
   if (process.env.NEXT_PUBLIC_VERCEL_ENV == "development") {
-    link = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+    link = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
   } else {
-    link = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+    link = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
   }
 
   const userResponse = await fetch(link, {
