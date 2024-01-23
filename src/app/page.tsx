@@ -6,26 +6,41 @@ import { fetchTweets } from "@/lib/utils";
 import { ApiError } from "@the-convocation/twitter-scraper/dist/errors";
 import TTweet from "./_types/Tweet";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
+import { getPlaiceholder } from "plaiceholder";
 
-async function fetchBlurredImages(link: string) {
-  const url = link;
+async function setBlurredTweets(user: User) {
+  try {
+    for (let i = 0; i < user.tweets.length; i++) {
+      let tweet: TTweet = user.tweets[i];
 
-  let x = "";
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV == "development") {
-    x = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
-  } else {
-    x = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/tweetMedia/api?imageUrl=${url}`;
+      let blurredMedia = "";
+      let source = "";
+      if (tweet.videos && tweet.videos.length > 0) {
+        source = tweet.videos[0].preview;
+      }
+      if (tweet.photos && tweet.photos.length > 0) {
+        source = tweet.photos[0].url;
+      }
+      if (source != "") {
+        const buffer = await fetch(source, {
+          next: { revalidate: 604800 },
+        }).then(async (res) => Buffer.from(await res.arrayBuffer()));
+        const { base64 } = await getPlaiceholder(buffer);
+        blurredMedia = base64;
+        user.tweets[i].blurredMedia = blurredMedia;
+      }
+    }
+    return user;
+  } catch (error) {
+    throw ApiError;
   }
-
-  const res = await fetch(x);
-  const { data }: { data: string } = await res.json();
-  return data;
 }
+
 async function getTwitterProfile() {
   const scraper = new Scraper({
     fetch: (input, init) => {
       // Transform input and init into your function's expected types...
-      return fetch(input, { ...init, next: { revalidate: 3600 } }).then(
+      return fetch(input, { ...init, next: { revalidate: 604800 } }).then(
         (res) => {
           // Transform res into a web-compliant response...
           return res;
@@ -49,19 +64,6 @@ async function getTwitterProfile() {
           for await (const tweet of tweets) {
             if (tweet) {
               let t: TTweet = tweet;
-              if (tweet.videos && tweet.videos.length > 0) {
-                const blurredMedia = await fetchBlurredImages(
-                  tweet.videos[0].preview
-                );
-                t = { ...tweet, blurredMedia };
-              }
-
-              if (tweet.photos && tweet.photos.length > 0) {
-                const blurredMedia = await fetchBlurredImages(
-                  tweet.photos[0].url
-                );
-                t = { ...tweet, blurredMedia };
-              }
               tweetsData.push(t);
             }
           }
@@ -82,6 +84,8 @@ async function getTwitterProfile() {
 
 export default async function Home() {
   let globalUser = await getTwitterProfile();
+  // let globalUserBlurred = await setBlurredTweets(globalUser);
+  // globalUser = globalUserBlurred;
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);
   let shuffledUser = { ...globalUser, tweets: shuffledTweets };

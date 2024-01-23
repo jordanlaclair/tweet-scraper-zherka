@@ -1,7 +1,7 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
 interface TTweet extends Tweet {
-  blurredMedia?: string;
+  blurredMedia?: string | undefined;
 }
 
 export default TTweet;

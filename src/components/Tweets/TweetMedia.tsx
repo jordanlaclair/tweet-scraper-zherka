@@ -3,13 +3,6 @@ import Tweet from "../../app/_types/Tweet";
 import TweetImage from "./TweetImage";
 import TweetVideo from "./TweetVideo";
 const TweetMedia = (props: { tweetData: Tweet }) => {
-  if (
-    !props.tweetData.blurredMedia ||
-    !(props.tweetData.blurredMedia.length > 0)
-  ) {
-    return null;
-  }
-
   if (props.tweetData.photos && props.tweetData.photos.length > 0) {
     return (
       <div className="m-4 flex justify-center align-middle overflow-hidden w-60 h-60 relative">
