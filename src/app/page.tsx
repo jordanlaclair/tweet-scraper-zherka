@@ -4,10 +4,13 @@ import User from "../app/_types/User";
 import { getRandom } from "@/lib/utils";
 
 async function getTwitterProfile() {
-  const userResponse = await fetch(`${process.env.HOST_NAME}/api`, {
-    //1 week of cache
-    next: { revalidate: 604800, tags: ["user"] },
-  });
+  const userResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API_URL}/api`,
+    {
+      //1 week of cache
+      next: { revalidate: 604800, tags: ["user"] },
+    }
+  );
 
   if (!userResponse.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -21,6 +24,10 @@ async function getTwitterProfile() {
 }
 
 export default async function Home() {
+  if (!process.env.NEXT_PUBLIC_BASE_API_URL) {
+    return null;
+  }
+
   let globalUser = await getTwitterProfile();
 
   let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);
