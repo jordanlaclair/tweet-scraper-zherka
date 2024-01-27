@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
+import constants from "@/lib/constants";
 const Matrix = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-  const [letters, setLetters] = useState(
-    "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZ"
-  );
+  const [letters, setLetters] = useState(constants.MATRIXLETTERS);
   const dropsRef = useRef<number[]>([]);
 
   const draw = () => {

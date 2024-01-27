@@ -5,12 +5,13 @@ import { getRandom } from "@/lib/utils";
 import { ApiError } from "@the-convocation/twitter-scraper/dist/errors";
 import TTweet from "./_types/Tweet";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
+import constants from "../lib/constants";
 
 async function getTwitterProfile() {
   const scraper = new Scraper({
     fetch: (input, init) => {
       // Transform input and init into your function's expected types...
-      return fetch(input, { ...init, next: { revalidate: 604800 } }).then(
+      return fetch(input, { ...init, next: { revalidate: 259200 } }).then(
         (res) => {
           // Transform res into a web-compliant response...
           return res;
@@ -24,10 +25,10 @@ async function getTwitterProfile() {
 
   try {
     return scraper
-      .getProfile("zherkaofficial")
+      .getProfile(constants.USER)
       .then((user) => {
         userData = user;
-        if (user.userId) return scraper.getTweetsByUserId(user.userId, 100);
+        if (user.userId) return scraper.getTweetsByUserId(user.userId, 150);
       })
       .then(async (tweets) => {
         if (tweets) {
@@ -42,27 +43,27 @@ async function getTwitterProfile() {
         const user: User = {
           user: userData,
           tweets: tweetsData,
+          shuffledTweets: [],
         };
 
-        return user;
+        let shuffledTweets: User["shuffledTweets"] = getRandom(
+          user.tweets,
+          constants.MAXTWEETS
+        );
+        return { ...user, shuffledTweets };
       });
   } catch (error) {
     throw ApiError;
   }
-  //const userResponse = await fetchTweets();
 }
 
 export default async function Home() {
-  let globalUser = await getTwitterProfile();
-
-  let shuffledTweets: User["tweets"] = getRandom(globalUser.tweets, 10);
-  let shuffledUser = { ...globalUser, tweets: shuffledTweets };
-  //console.log(shuffledUser);
+  let user = await getTwitterProfile();
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">
       <Matrix />
-      <TweetWrapper allUserData={globalUser} shuffledUserData={shuffledUser} />
+      <TweetWrapper user={user} />
     </main>
   );
 }

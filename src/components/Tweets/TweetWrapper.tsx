@@ -5,10 +5,11 @@ import User from "../../app/_types/User";
 import Tweet from "./Tweet";
 import { getRandom } from "@/lib/utils";
 import { Cinzel } from "next/font/google";
+import constants from "@/lib/constants";
 const cinzel = Cinzel({ subsets: ["latin"] });
 
-const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
-  const [user, setUser] = useState<User>(props.shuffledUserData);
+const TweetWrapper = (props: { user: User }) => {
+  const [user, setUser] = useState<User>(props.user);
   const [bigBox, setBigBox] = useState<HTMLDivElement | null>(null);
 
   const measuredRef = useCallback((node: HTMLDivElement) => {
@@ -16,16 +17,12 @@ const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
   }, []);
 
   function shuffleTweets() {
-    const shuffleTweets: User["tweets"] = getRandom(
-      props.allUserData.tweets,
-      props.shuffledUserData.tweets.length
+    const shuffledTweets: User["tweets"] = getRandom(
+      user.tweets,
+      constants.MAXTWEETS
     );
-    const newUser = { ...user, tweets: shuffleTweets };
+    const newUser: User = { ...user, shuffledTweets };
     setUser(newUser);
-  }
-
-  function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
   }
 
   const calcOffsetY = (element: HTMLDivElement, n: number) => {
@@ -33,12 +30,14 @@ const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
   };
 
   const calcOffsetX = (element: HTMLDivElement, n: number) => {
-    //return getRandomInt(element.offsetWidth);
     return (element.offsetWidth / (n + 1)) % element.offsetWidth;
   };
 
-  if (!props.shuffledUserData.tweets || !props.shuffledUserData.tweets)
-    return null;
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  if (!user.shuffledTweets) return null;
 
   return (
     <div
@@ -53,7 +52,7 @@ const TweetWrapper = (props: { allUserData: User; shuffledUserData: User }) => {
         <span className={cinzel.className}>Shuffle</span>
       </button>
 
-      {user.tweets.map((tweet, index) => {
+      {user.shuffledTweets.map((tweet, index) => {
         if (!bigBox) return null;
 
         return (
