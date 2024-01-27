@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Zherkas Intro Stream
 
-## Getting Started
+A for fun project I made for streamer/comedian [@ZherkaOfficial](https://twitter.com/ZherkaOfficial) to use during his stream intros that displays his tweets.
 
-First, run the development server:
+## Additional
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+You can actually fetch any users tweets by changing the name of the user in src/app/lib/constants.ts.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or if you wanted to, add your own wrapper that lets the user change it on the front-end.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Uses one server-side component (SSC) that fetches 150 tweets on browser's initial render and caches it. Revalidation is set to every 3 days.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+From what I can tell, the scraper's API fetches the users top tweets, so it will fetch a user's top 150 tweets.
 
-## Learn More
+### Technologies
 
-To learn more about Next.js, take a look at the following resources:
+- [@the-convocation/twitter-scraper](https://github.com/the-convocation/twitter-scraper) (Twitter scraper for Node.js)
+- Next.js (App Router)
+- Tailwind
+- Typescript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Inspiration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+At the time of writing this, he helped me with endless value of entertainment and self-development that will impact me forever so I wanted to make him something out of gratitude and learn throughout the process.
