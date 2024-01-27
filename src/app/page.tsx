@@ -46,11 +46,7 @@ async function getTwitterProfile() {
           shuffledTweets: [],
         };
 
-        let shuffledTweets: User["shuffledTweets"] = getRandom(
-          user.tweets,
-          constants.MAXTWEETS
-        );
-        return { ...user, shuffledTweets };
+        return user;
       });
   } catch (error) {
     throw ApiError;
@@ -59,6 +55,13 @@ async function getTwitterProfile() {
 
 export default async function Home() {
   let user = await getTwitterProfile();
+
+  let shuffledTweets: User["shuffledTweets"] = getRandom(
+    user.tweets,
+    constants.MAXTWEETS
+  );
+
+  user = { ...user, shuffledTweets };
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">

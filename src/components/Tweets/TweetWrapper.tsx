@@ -33,10 +33,6 @@ const TweetWrapper = (props: { user: User }) => {
     return (element.offsetWidth / (n + 1)) % element.offsetWidth;
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   if (!user.shuffledTweets) return null;
 
   return (
