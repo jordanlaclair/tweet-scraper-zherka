@@ -2,6 +2,8 @@
 
 A for fun project I made for streamer/comedian [@ZherkaOfficial](https://twitter.com/ZherkaOfficial) to use during his stream intros that displays his tweets.
 
+- Demo Link: [https://zherkastweets.com/](https://zherkastweets.com/)
+
 ## Additional
 
 You can actually fetch any users tweets by changing the name of the user in src/app/lib/constants.ts.
@@ -15,9 +17,10 @@ From what I can tell, the scraper's API fetches the users top tweets, so it will
 ### Technologies
 
 - [@the-convocation/twitter-scraper](https://github.com/the-convocation/twitter-scraper) (Twitter scraper for Node.js)
-- Next.js (App Router)
+- Next.js (using App Router)
 - Tailwind
 - Typescript
+- Vercel (Host)
 
 ## Inspiration
 
