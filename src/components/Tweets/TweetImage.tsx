@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Tweet } from "@the-convocation/twitter-scraper";
 import Image from "next/image";
-//import { getPlaiceholder } from "plaiceholder";
 
 const TweetImage = (props: {
   photos: Tweet["photos"];

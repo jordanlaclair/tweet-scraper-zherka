@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import User from "../../app/_types/User";
 import Tweet from "./Tweet";
 import { getRandom } from "@/lib/utils";

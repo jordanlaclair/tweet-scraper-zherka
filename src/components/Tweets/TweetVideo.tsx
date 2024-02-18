@@ -1,7 +1,7 @@
 "use client";
 import { Tweet } from "@the-convocation/twitter-scraper";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const TweetVideo = (props: {
   video: Tweet["videos"];

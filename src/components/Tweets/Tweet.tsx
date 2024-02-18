@@ -10,6 +10,7 @@ import User from "../../app/_types/User";
 import moment from "moment";
 import TweetMedia from "./TweetMedia";
 import { parseTweetLength } from "@/lib/utils";
+import { randomNumber } from "@/lib/utils";
 
 const Tweet = (props: {
   wrapper: HTMLElement;
@@ -18,44 +19,13 @@ const Tweet = (props: {
   x: number;
   y: number;
 }) => {
-  function getOffset(el: HTMLDivElement) {
-    const rect = el.getBoundingClientRect();
-    return {
-      left: window.scrollX + rect.left,
-      top: window.scrollY + rect.top,
-    };
-  }
-
-  function outerWidth(el: HTMLDivElement) {
-    var width = el.offsetWidth;
-    var style = getComputedStyle(el);
-
-    width += parseInt(style.marginLeft) + parseInt(style.marginRight);
-
-    return width;
-  }
-
-  function outerHeight(el: HTMLDivElement) {
-    var height = el.offsetHeight;
-    var style = getComputedStyle(el);
-
-    height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-    return height;
-  }
-
-  function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
   const box = useRef<HTMLDivElement>(null);
 
   const [position, setPosition] = useState({
     x: props.x,
     y: props.y,
   });
-  function randomNumber(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-  }
+
   const [speed, setSpeed] = useState({
     x: randomNumber(0.1, 1),
     y: randomNumber(0.1, 1),
@@ -93,7 +63,6 @@ const Tweet = (props: {
   }, [position, speed]);
 
   useEffect(() => {
-    //console.log(props.x, props.y);
     if (props.wrapper && props.wrapper && box.current && box) {
       setPosition({
         x: props.x,
